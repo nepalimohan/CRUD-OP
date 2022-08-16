@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from products.api.serializers import ProductSerializer
 from products.models import Product
 from rest_framework.response import Response
+from rest_framework import status
 
 # Create your views here.
 class ProductListAV(APIView):
@@ -22,7 +23,10 @@ class ProductListAV(APIView):
         
 class ProductDetailsAV(APIView):
     def get(self, request, pk):
-        product = Product.objects.get(pk=pk)
+        try:
+            product = Product.objects.get(pk=pk)
+        except Product.DoesNotExist:
+            return Response({'Error': 'Product not found'}, status= status.HTTP_404_NOT_FOUND)
         serializer = ProductSerializer(product)
         return Response(serializer.data)
     
@@ -34,3 +38,8 @@ class ProductDetailsAV(APIView):
             return Response(serializer.data)
         else:
             return Response(serializer.errors)
+        
+    def delete(self, request, pk):
+        product = Product.objects.get(pk=pk)
+        product.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
