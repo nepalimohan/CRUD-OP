@@ -25,3 +25,12 @@ class ProductDetailsAV(APIView):
         product = Product.objects.get(pk=pk)
         serializer = ProductSerializer(product)
         return Response(serializer.data)
+    
+    def put(self, request, pk):
+        product = Product.objects.get(pk=pk)
+        serializer = ProductSerializer(product, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
