@@ -1,3 +1,4 @@
+from urllib import request
 from django.shortcuts import render
 from rest_framework.views import APIView
 from products.api.serializers import ProductSerializer
@@ -18,3 +19,9 @@ class ProductListAV(APIView):
             return Response(serializer.data)
         else:
             return Response(serializer.errors)
+        
+class ProductDetailsAV(APIView):
+    def get(self, request, pk):
+        product = Product.objects.get(pk=pk)
+        serializer = ProductSerializer(product)
+        return Response(serializer.data)
