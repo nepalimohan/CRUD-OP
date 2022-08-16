@@ -11,9 +11,10 @@ class ProductListAV(APIView):
         serializer = ProductSerializer(product, many=True)
         return Response(serializer.data)
     
-    # def post(self, request):
-    #     serializer = ProductSerializer(data=request.data)
-    #     if serializer.is_valid():
-    #         return Response(serializer.data)
-    #     else:
-    #         return Response(serializer.errors)
+    def post(self, request):
+        serializer = ProductSerializer(data= request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
