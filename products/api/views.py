@@ -23,18 +23,18 @@ class ProductList(mixins.ListModelMixin,
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
     
-class ProductDetails(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
+class ProductDetails(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
-    def retireve(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
     
-    def update(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
     
     def delete(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+        return self.destroy(request, *args, **kwargs)
     
 # Create your views here.
 class ProductListAV(APIView):
